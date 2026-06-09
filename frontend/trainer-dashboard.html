@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Trainer Dashboard - Gym Management System</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body class="page-shell">
+  <main class="app-shell">
+    <header class="dashboard-header">
+      <div>
+        <p class="eyebrow">Trainer Module</p>
+        <h1 id="trainerWelcome">Trainer Dashboard</h1>
+      </div>
+      <div class="header-actions">
+        <a class="secondary-btn message-link" href="messages.html">Messages <span id="messageCountBadge" class="count-badge">0</span></a>
+        <button class="logout-btn" id="logoutBtn" type="button">Logout</button>
+      </div>
+    </header>
+
+    <section class="cards">
+      <article class="card"><h3>Assigned Members</h3><p id="assignedCount">0</p></article>
+      <article class="card"><h3>Attendance Marked</h3><p id="attendanceMarked">0</p></article>
+      <article class="card"><h3>Diet Plans Created</h3><p id="dietCreated">0</p></article>
+      <article class="card"><h3>Progress Logs Added</h3><p id="progressCreated">0</p></article>
+    </section>
+
+    <section class="content-grid">
+      <article class="panel">
+        <div class="panel-head">
+          <h2>My Profile</h2>
+          <button id="toggleTrainerProfileEditBtn" type="button">Edit Profile</button>
+        </div>
+        <div id="trainerProfile" class="info-grid"></div>
+      </article>
+
+      <article class="panel">
+        <div class="panel-head">
+          <h2>Assigned Members</h2>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Name</th><th>Email</th><th>Phone</th><th>Joined</th></tr>
+            </thead>
+            <tbody id="assignedMembersRows"></tbody>
+          </table>
+        </div>
+      </article>
+    </section>
+
+    <section class="content-grid">
+      <article class="panel">
+        <div class="panel-head">
+          <h2>Mark Attendance</h2>
+        </div>
+        <form id="attendanceForm" class="stack-form">
+          <select id="attendanceMember" required></select>
+          <select id="attendanceStatus" required>
+            <option value="Present">Present</option>
+            <option value="Absent">Absent</option>
+          </select>
+          <button type="submit">Save Attendance</button>
+        </form>
+      </article>
+
+      <article class="panel">
+        <div class="panel-head">
+          <h2>Create Diet Plan</h2>
+        </div>
+        <form id="dietForm" class="stack-form">
+          <select id="dietMember" required></select>
+          <select id="dietGoal" required>
+            <option value="Weight Loss">Weight Loss</option>
+            <option value="Muscle Gain">Muscle Gain</option>
+            <option value="Fitness">Fitness</option>
+          </select>
+          <textarea id="dietDetails" rows="5" placeholder="Diet plan details" required></textarea>
+          <button type="submit">Add Diet Plan</button>
+        </form>
+      </article>
+    </section>
+
+    <section class="content-grid">
+      <article class="panel">
+        <div class="panel-head">
+          <h2>Add Progress Entry</h2>
+        </div>
+        <form id="progressForm" class="stack-form">
+          <select id="progressMember" required></select>
+          <input id="progressWeight" type="number" step="0.1" placeholder="Weight (kg)" required />
+          <input id="progressHeight" type="number" step="0.1" placeholder="Height (cm)" required />
+          <select id="progressType" required>
+            <option value="">Select Progress Type</option>
+            <option value="Weight Loss">Weight Loss</option>
+            <option value="Weight Gain">Weight Gain</option>
+            <option value="Muscle Gain">Muscle Gain</option>
+            <option value="Fat Loss">Fat Loss</option>
+            <option value="BMI Improvement">BMI Improvement</option>
+            <option value="Strength Improvement">Strength Improvement</option>
+            <option value="Endurance Improvement">Endurance Improvement</option>
+            <option value="General Fitness">General Fitness</option>
+          </select>
+          <textarea id="progressNotes" rows="4" placeholder="Notes"></textarea>
+          <button type="submit">Save Progress</button>
+        </form>
+      </article>
+
+      <article class="panel">
+        <div class="panel-head">
+          <h2>Recent Activity</h2>
+        </div>
+        <div id="trainerActivity" class="stacked-cards"></div>
+      </article>
+    </section>
+  </main>
+
+  <div id="trainerProfileModal" class="modal-shell hidden-form">
+    <div class="modal-card">
+      <div class="panel-head">
+        <h2>Edit Trainer Profile</h2>
+        <button id="closeTrainerProfileModal" type="button" class="secondary-btn">Close</button>
+      </div>
+      <form id="trainerProfileForm" class="stack-form">
+        <input type="text" id="editTrainerName" placeholder="Name" required />
+        <input type="text" id="editTrainerPhone" placeholder="Phone Number" required />
+        <input type="number" id="editTrainerExperience" placeholder="Experience (years)" min="0" required />
+        <div class="checkbox-panel">
+          <p class="field-label">Select Specializations</p>
+          <label class="checkbox-item"><input type="checkbox" name="trainerEditSpecialization" value="Yoga" /><span>Yoga</span></label>
+          <label class="checkbox-item"><input type="checkbox" name="trainerEditSpecialization" value="Cardio" /><span>Cardio</span></label>
+          <label class="checkbox-item"><input type="checkbox" name="trainerEditSpecialization" value="Weight Training" /><span>Weight Training</span></label>
+          <label class="checkbox-item"><input type="checkbox" name="trainerEditSpecialization" value="Zumba" /><span>Zumba</span></label>
+        </div>
+        <textarea id="editTrainerBio" rows="5" placeholder="Bio"></textarea>
+        <input type="file" id="editTrainerProfileImage" accept="image/*" />
+        <button type="submit">Save Profile</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="js/trainer.js"></script>
+</body>
+</html>

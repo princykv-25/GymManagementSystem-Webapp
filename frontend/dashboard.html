@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Member Dashboard - Gym Management System</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body class="page-shell">
+  <main class="app-shell">
+    <header class="dashboard-header">
+      <div>
+        <p class="eyebrow">Member Module</p>
+        <h1 id="memberWelcome">Welcome</h1>
+      </div>
+      <div class="header-actions">
+        <a class="secondary-btn message-link" href="messages.html">Messages <span id="messageCountBadge" class="count-badge">0</span></a>
+        <button class="logout-btn" id="logoutBtn" type="button">Logout</button>
+      </div>
+    </header>
+
+    <section class="cards">
+      <article class="card"><h3>Assigned Trainer</h3><p id="trainerName">Not Assigned</p></article>
+      <article class="card"><h3>Total Attendance</h3><p id="attendanceTotal">0</p></article>
+      <article class="card"><h3>Diet Plans</h3><p id="dietPlanTotal">0</p></article>
+      <article class="card"><h3>Progress Entries</h3><p id="progressTotal">0</p></article>
+    </section>
+
+    <section class="content-grid">
+      <article class="panel">
+        <div class="panel-head">
+          <h2>My Profile</h2>
+          <button id="toggleProfileEditBtn" type="button">Edit Profile</button>
+        </div>
+        <div id="memberProfile" class="info-grid"></div>
+      </article>
+
+      <article class="panel">
+        <div class="panel-head">
+          <h2>Weight Progress</h2>
+        </div>
+        <div class="chart-wrap">
+          <canvas id="progressChart"></canvas>
+        </div>
+        <p id="progressHint" class="form-note"></p>
+      </article>
+    </section>
+
+    <section class="content-grid">
+      <article class="panel">
+        <div class="panel-head">
+          <h2>Diet Plans</h2>
+        </div>
+        <div id="dietPlans" class="stacked-cards"></div>
+      </article>
+
+      <article class="panel">
+        <div class="panel-head">
+          <h2>Attendance History</h2>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Date</th><th>Status</th><th>Trainer</th></tr>
+            </thead>
+            <tbody id="attendanceRows"></tbody>
+          </table>
+        </div>
+      </article>
+    </section>
+
+    <section class="panel">
+      <div class="panel-head">
+        <h2>Progress Records</h2>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Date</th><th>Weight</th><th>Height</th><th>BMI</th><th>Type</th><th>Notes</th></tr>
+          </thead>
+          <tbody id="progressRows"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <div id="memberProfileModal" class="modal-shell hidden-form">
+    <div class="modal-card">
+      <div class="panel-head">
+        <h2>Edit Profile</h2>
+        <button id="closeMemberProfileModal" type="button" class="secondary-btn">Close</button>
+      </div>
+      <form id="memberProfileForm" class="stack-form">
+        <input type="text" id="editName" placeholder="Name" required />
+        <input type="text" id="editPhone" placeholder="Phone Number" required />
+        <input type="number" id="editAge" placeholder="Age" min="1" required />
+        <select id="editGender" required>
+          <option value="male">Male</option>
+          <option value="female">Female</option>
+          <option value="other">Other</option>
+        </select>
+        <textarea id="editAddress" rows="3" placeholder="Address" required></textarea>
+        <input type="number" id="editHeight" placeholder="Height (cm)" min="1" step="0.1" />
+        <input type="number" id="editWeight" placeholder="Weight (kg)" min="1" step="0.1" />
+        <input type="file" id="editProfileImage" accept="image/*" />
+        <div id="bmiPreview" class="form-preview">BMI: Not available</div>
+        <button type="submit">Save Profile</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="js/script.js"></script>
+</body>
+</html>

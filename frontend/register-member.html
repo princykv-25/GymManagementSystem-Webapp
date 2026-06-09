@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Add Member - Gym Management System</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body class="page-shell page-center">
+  <div class="title-banner">
+    <h1>Gym Management System</h1>
+    <p>Add Member</p>
+  </div>
+
+  <div class="register-container glass-panel">
+    <div class="header-actions" style="margin-bottom: 18px;">
+      <a class="secondary-btn" href="admin-dashboard.html">Back to Dashboard</a>
+    </div>
+    <form id="memberRegisterForm" class="register-form stack-form">
+      <h2>Add Member</h2>
+
+      <input type="text" id="name" placeholder="Full Name" required />
+      <input type="email" id="email" placeholder="Email Address" required />
+      <input type="text" id="phone" placeholder="Phone Number" required />
+      <input
+        type="password"
+        id="password"
+        placeholder="Password (Min 8 chars, 1 uppercase, 1 number)"
+        pattern="^(?=.*[A-Z])(?=.*\d).{8,}$"
+        title="Password must be at least 8 characters long and include at least 1 uppercase letter and 1 number."
+        required
+      />
+      <input type="number" id="age" placeholder="Age" required />
+
+      <select id="gender" required>
+        <option value="" disabled selected>Select Gender</option>
+        <option value="male">Male</option>
+        <option value="female">Female</option>
+        <option value="other">Other</option>
+      </select>
+
+      <textarea id="address" placeholder="Address" required></textarea>
+
+      <button type="submit">Add Member</button>
+
+      <p class="form-note">
+        Need login instead? <a href="index.html">Go to Login</a>
+      </p>
+    </form>
+  </div>
+
+  <script src="js/register.js"></script>
+</body>
+</html>

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Dashboard - Gym Management System</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body class="page-shell">
+  <main class="app-shell">
+    <header class="dashboard-header">
+      <div>
+        <p class="eyebrow">Admin Module</p>
+        <h1>Gym Overview</h1>
+      </div>
+      <div class="header-actions">
+        <a class="secondary-btn" href="manage-members.html">Manage Members</a>
+        <a class="secondary-btn" href="manage-trainers.html">Manage Trainers</a>
+        <a class="secondary-btn message-link" href="messages.html">Messages <span id="messageCountBadge" class="count-badge">0</span></a>
+        <button class="logout-btn" id="logoutBtn" type="button">Logout</button>
+      </div>
+    </header>
+
+    <section class="cards" id="statsGrid">
+      <article class="card"><h3>Total Members</h3><p id="membersCount">0</p></article>
+      <article class="card"><h3>Total Trainers</h3><p id="trainersCount">0</p></article>
+      <article class="card"><h3>Attendance Records</h3><p id="attendanceCount">0</p></article>
+      <article class="card"><h3>Diet Plans</h3><p id="dietCount">0</p></article>
+      <article class="card"><h3>Progress Logs</h3><p id="progressCount">0</p></article>
+    </section>
+
+    <section class="content-grid">
+      <article class="panel">
+        <div class="panel-head">
+          <h2>Dashboard Chart</h2>
+        </div>
+        <div class="chart-wrap">
+          <canvas id="adminChart"></canvas>
+        </div>
+      </article>
+
+      <article class="panel">
+        <div class="panel-head">
+          <h2>Latest Members</h2>
+        </div>
+        <ul id="recentMembers" class="data-list"></ul>
+      </article>
+    </section>
+
+    <section class="content-grid">
+      <article class="panel">
+        <div class="panel-head">
+          <h2>Unassigned Members</h2>
+          <a class="secondary-btn" href="manage-members.html">Open Manager</a>
+        </div>
+        <div id="unassignedMembers" class="action-list"></div>
+      </article>
+
+      <article class="panel">
+        <div class="panel-head">
+          <h2>Quick Access</h2>
+        </div>
+        <div class="quick-grid">
+          <a class="quick-card" href="register-member.html">
+            <h3>Add Member</h3>
+            <p>Register a new gym member quickly.</p>
+          </a>
+          <a class="quick-card" href="register-trainer.html">
+            <h3>Add Trainer</h3>
+            <p>Onboard a trainer and assign members.</p>
+          </a>
+          <a class="quick-card" href="manage-members.html">
+            <h3>Assign Trainers</h3>
+            <p>Match unassigned members with trainers.</p>
+          </a>
+          <a class="quick-card" href="manage-trainers.html">
+            <h3>Manage Trainers</h3>
+            <p>Edit trainer profiles and remove trainers.</p>
+          </a>
+          <a class="quick-card" href="attendance.html">
+            <h3>Attendance Log</h3>
+            <p>Review all attendance records in one place.</p>
+          </a>
+          <a class="quick-card" href="messages.html">
+            <h3>Messages</h3>
+            <p>Communicate with members and trainers.</p>
+          </a>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>

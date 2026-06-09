@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Manage Trainers - Gym Management System</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body class="page-shell">
+  <main class="app-shell">
+    <header class="dashboard-header">
+      <div>
+        <p class="eyebrow">Admin Module</p>
+        <h1>Manage Trainers</h1>
+      </div>
+      <div class="header-actions">
+        <a class="secondary-btn" href="manage-members.html">Manage Members</a>
+        <a class="secondary-btn" href="messages.html">Messages</a>
+        <a class="secondary-btn" href="admin-dashboard.html">Back to Dashboard</a>
+      </div>
+    </header>
+
+    <section class="panel">
+      <div class="panel-head">
+        <h2>All Trainers</h2>
+      </div>
+      <div id="trainerManagerList" class="action-list"></div>
+    </section>
+  </main>
+
+  <div id="trainerEditModal" class="modal-shell hidden-form">
+    <div class="modal-card">
+      <div class="panel-head">
+        <h2>Edit Trainer</h2>
+        <button id="closeTrainerEditModal" type="button" class="secondary-btn">Close</button>
+      </div>
+      <form id="adminTrainerEditForm" class="stack-form">
+        <input type="hidden" id="adminEditTrainerId" />
+        <input type="text" id="adminEditTrainerName" placeholder="Name" required />
+        <input type="text" id="adminEditTrainerPhone" placeholder="Phone Number" required />
+        <input type="number" id="adminEditTrainerExperience" placeholder="Experience (years)" min="0" required />
+        <div class="checkbox-panel">
+          <p class="field-label">Select Specializations</p>
+          <label class="checkbox-item"><input type="checkbox" name="adminTrainerSpecialization" value="Yoga" /><span>Yoga</span></label>
+          <label class="checkbox-item"><input type="checkbox" name="adminTrainerSpecialization" value="Cardio" /><span>Cardio</span></label>
+          <label class="checkbox-item"><input type="checkbox" name="adminTrainerSpecialization" value="Weight Training" /><span>Weight Training</span></label>
+          <label class="checkbox-item"><input type="checkbox" name="adminTrainerSpecialization" value="Zumba" /><span>Zumba</span></label>
+        </div>
+        <textarea id="adminEditTrainerBio" rows="5" placeholder="Bio"></textarea>
+        <button type="submit">Save Trainer</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="js/manage-trainers.js"></script>
+</body>
+</html>

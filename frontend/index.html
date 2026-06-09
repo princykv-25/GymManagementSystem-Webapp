@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login - Gym Management System</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body class="page-shell page-center">
+  <div class="title-banner">
+    <h1>Gym Management System</h1>
+    <p>Admin, trainer, and member portal</p>
+  </div>
+
+  <section class="glass-panel login-container">
+    <h2>Login</h2>
+    <form id="loginForm" class="stack-form">
+      <input type="email" id="email" placeholder="Email" required />
+      <input
+        type="password"
+        id="password"
+        placeholder="Password"
+        required
+      />
+      <select id="role" required>
+        <option value="">Select Role</option>
+        <option value="member">Member</option>
+        <option value="trainer">Trainer</option>
+        <option value="admin">Admin</option>
+      </select>
+      <button type="submit">Login</button>
+      <p class="form-note">
+        New user?
+        <a href="register-member.html">Register as Member</a>
+        |
+        <a href="register-trainer.html">Register as Trainer</a>
+      </p>
+      <p class="form-note">
+        Old account password not working?
+        <a href="reset-password.html">Update member password</a>
+      </p>
+      <p class="form-note">
+        Trainer password issue?
+        <a href="reset-trainer-password.html">Update trainer password</a>
+      </p>
+    </form>
+  </section>
+
+  <script src="js/script.js"></script>
+</body>
+</html>

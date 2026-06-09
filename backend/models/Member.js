@@ -8,8 +8,12 @@ const memberSchema = new mongoose.Schema({
   age: { type: Number, required: true, min: 1 },
   gender: { type: String, enum: ["male", "female", "other"], required: true },
   address: { type: String, required: true },
+  height: { type: Number, min: 1, default: null },
+  weight: { type: Number, min: 1, default: null },
+  bmi: { type: Number, min: 0, default: null },
+  profileImage: { type: String, default: "" },
   joinDate: { type: Date, default: Date.now },
-  trainer: { type: mongoose.Schema.Types.ObjectId, ref: "Trainer" }
+  trainer: { type: mongoose.Schema.Types.ObjectId, ref: "Trainer", default: null }
 
 });
 

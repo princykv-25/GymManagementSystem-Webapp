@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Manage Members - Gym Management System</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body class="page-shell">
+  <main class="app-shell">
+    <header class="dashboard-header">
+      <div>
+        <p class="eyebrow">Admin Module</p>
+        <h1>Manage Members</h1>
+      </div>
+      <div class="header-actions">
+        <a class="secondary-btn" href="manage-trainers.html">Manage Trainers</a>
+        <a class="secondary-btn" href="messages.html">Messages</a>
+        <a class="secondary-btn" href="admin-dashboard.html">Back to Dashboard</a>
+      </div>
+    </header>
+
+    <section class="content-grid">
+      <article class="panel">
+        <div class="panel-head">
+          <h2>All Members</h2>
+        </div>
+        <ul id="recentMembers" class="data-list"></ul>
+      </article>
+
+      <article class="panel">
+        <div class="panel-head">
+          <h2>Unassigned Members</h2>
+        </div>
+        <div id="unassignedMembers" class="action-list"></div>
+      </article>
+    </section>
+  </main>
+
+  <div id="memberEditModal" class="modal-shell hidden-form">
+    <div class="modal-card">
+      <div class="panel-head">
+        <h2>Edit Member</h2>
+        <button id="closeMemberEditModal" type="button" class="secondary-btn">Close</button>
+      </div>
+      <form id="adminMemberEditForm" class="stack-form">
+        <input type="hidden" id="adminEditMemberId" />
+        <input type="text" id="adminEditMemberName" placeholder="Name" required />
+        <input type="text" id="adminEditMemberPhone" placeholder="Phone Number" required />
+        <input type="number" id="adminEditMemberAge" placeholder="Age" min="1" required />
+        <select id="adminEditMemberGender" required>
+          <option value="male">Male</option>
+          <option value="female">Female</option>
+          <option value="other">Other</option>
+        </select>
+        <textarea id="adminEditMemberAddress" rows="3" placeholder="Address" required></textarea>
+        <input type="number" id="adminEditMemberHeight" placeholder="Height (cm)" min="1" step="0.1" />
+        <input type="number" id="adminEditMemberWeight" placeholder="Weight (kg)" min="1" step="0.1" />
+        <button type="submit">Save Member</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="js/manage-members.js"></script>
+</body>
+</html>

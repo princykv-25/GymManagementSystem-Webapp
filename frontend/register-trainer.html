@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Trainer Registration - Gym Management System</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body class="page-shell page-center">
+  <div class="title-banner">
+    <h1>Gym Management System</h1>
+    <p>Trainer Registration</p>
+  </div>
+
+  <div class="register-container glass-panel">
+    <form id="trainerRegisterForm" class="register-form stack-form">
+      <h2>Trainer Registration</h2>
+
+      <input type="text" id="name" placeholder="Full Name" required />
+      <input type="email" id="email" placeholder="Email" required />
+      <input type="text" id="phone" placeholder="Phone Number" required />
+      <input
+        type="password"
+        id="password"
+        placeholder="Password (Min 8 chars, 1 uppercase, 1 number)"
+        pattern="^(?=.*[A-Z])(?=.*\d).{8,}$"
+        title="Password must be at least 8 characters long and include at least 1 uppercase letter and 1 number."
+        required
+      />
+      <input type="number" id="experience" placeholder="Years of Experience" required />
+
+      <div class="checkbox-panel">
+        <p class="field-label">Select Specializations</p>
+        <label class="checkbox-item">
+          <input type="checkbox" name="specialization" value="Yoga" />
+          <span>Yoga</span>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" name="specialization" value="Cardio" />
+          <span>Cardio</span>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" name="specialization" value="Weight Training" />
+          <span>Weight Training</span>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" name="specialization" value="Zumba" />
+          <span>Zumba</span>
+        </label>
+      </div>
+
+      <textarea id="bio" placeholder="Short Bio or Notes" rows="3"></textarea>
+
+      <button type="submit">Register</button>
+
+      <p class="form-note">Already registered? <a href="index.html">Login</a></p>
+    </form>
+  </div>
+
+  <script src="js/register.js"></script>
+</body>
+</html>

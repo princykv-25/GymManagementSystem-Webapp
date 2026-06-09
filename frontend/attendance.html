@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Attendance Records - Gym Management System</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body class="page-shell">
+  <main class="app-shell">
+    <header class="dashboard-header">
+      <div>
+        <p class="eyebrow">Admin Report</p>
+        <h1>Attendance Records</h1>
+      </div>
+      <a class="secondary-btn" href="admin-dashboard.html">Back to Dashboard</a>
+    </header>
+
+    <section class="panel">
+      <div class="panel-head">
+        <h2>All Attendance Entries</h2>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Member</th><th>Trainer</th><th>Date</th><th>Status</th></tr>
+          </thead>
+          <tbody id="attendanceAdminRows"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <script src="js/attendance.js"></script>
+</body>
+</html>

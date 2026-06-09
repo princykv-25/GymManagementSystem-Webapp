@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Messages - Gym Management System</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body class="page-shell">
+  <main class="app-shell">
+    <header class="dashboard-header">
+      <div>
+        <p class="eyebrow">Communication</p>
+        <h1>Messages</h1>
+      </div>
+      <div class="header-actions">
+        <a class="secondary-btn" id="messagesBackLink" href="index.html">Back</a>
+      </div>
+    </header>
+
+    <section class="content-grid">
+      <article class="panel">
+        <div class="panel-head">
+          <h2>Send Message</h2>
+        </div>
+        <form id="messageForm" class="stack-form">
+          <select id="recipientRole" required>
+            <option value="">Select Recipient Role</option>
+            <option value="admin">Admin</option>
+            <option value="trainer">Trainer</option>
+            <option value="member">Member</option>
+          </select>
+          <select id="recipientUser" required>
+            <option value="">Select Recipient</option>
+          </select>
+          <textarea id="messageContent" rows="6" placeholder="Type your message here" required></textarea>
+          <button type="submit">Send Message</button>
+        </form>
+      </article>
+
+      <article class="panel">
+        <div class="panel-head">
+          <h2>Inbox</h2>
+        </div>
+        <div id="messageList" class="stacked-cards"></div>
+      </article>
+    </section>
+  </main>
+
+  <script src="js/messages.js"></script>
+</body>
+</html>
