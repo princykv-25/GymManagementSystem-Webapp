@@ -12,6 +12,20 @@ router.post("/", async (req, res) => {
   }
 });
 
+router.get("/count", async (req, res) => {
+  try {
+    const { role, userId } = req.query;
+    const count = await Message.countDocuments({
+      recipientRole: role,
+      recipientId: userId,
+    });
+
+    res.json({ count });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 router.get("/", async (req, res) => {
   try {
     const { role, userId } = req.query;
@@ -23,20 +37,6 @@ router.get("/", async (req, res) => {
     }).sort({ createdAt: -1 });
 
     res.json(messages);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
-
-router.get("/count", async (req, res) => {
-  try {
-    const { role, userId } = req.query;
-    const count = await Message.countDocuments({
-      recipientRole: role,
-      recipientId: userId,
-    });
-
-    res.json({ count });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

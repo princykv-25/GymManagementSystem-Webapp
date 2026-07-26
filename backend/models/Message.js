@@ -8,6 +8,7 @@ const messageSchema = new mongoose.Schema({
   },
   senderId: { type: String, required: true },
   senderName: { type: String, required: true },
+  senderImage: { type: String, default: "" },
   recipientRole: {
     type: String,
     enum: ["admin", "trainer", "member"],
@@ -15,6 +16,7 @@ const messageSchema = new mongoose.Schema({
   },
   recipientId: { type: String, required: true },
   recipientName: { type: String, required: true },
+  recipientImage: { type: String, default: "" },
   content: { type: String, required: true, trim: true },
   createdAt: { type: Date, default: Date.now },
 });

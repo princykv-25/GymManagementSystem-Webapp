@@ -7,7 +7,7 @@ router.post("/mark", async (req, res) => {
   try {
     const attendance = new Attendance(req.body);
     await attendance.save();
-    res.status(201).json({ message: "Attendnace marked successfully", attendance });
+    res.status(201).json({ message: "Attendance marked successfully", attendance });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }

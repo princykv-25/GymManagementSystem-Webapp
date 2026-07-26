@@ -43,7 +43,30 @@ router.get("/count", async (req, res) => {
   }
 });
 
+// Update diet plan
+router.put("/:id", async (req, res) => {
+  try {
+    const dietplan = await DietPlan.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+      runValidators: true,
+    }).populate("member").populate("trainer");
+    if (!dietplan) return res.status(404).json({ error: "Diet plan not found" });
+    res.json({ message: "Diet plan updated successfully", dietplan });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+});
 
-
+// Delete diet plan
+router.delete("/:id", async (req, res) => {
+  try {
+    const dietplan = await DietPlan.findByIdAndDelete(req.params.id);
+    if (!dietplan) return res.status(404).json({ error: "Diet plan not found" });
+    res.json({ message: "Diet plan deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
 
 module.exports = router;
+

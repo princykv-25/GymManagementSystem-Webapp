@@ -59,7 +59,18 @@ function renderTrainerProfile(trainer) {
     ? trainer.specialization.join(", ")
     : trainer.specialization;
 
+  const avatarHtml = trainer.profileImage
+    ? `<img src="${trainer.profileImage}" alt="${trainer.name}" class="profile-avatar" />`
+    : `<div class="profile-avatar-placeholder">${trainer.name.charAt(0).toUpperCase()}</div>`;
+
   document.getElementById("trainerProfile").innerHTML = `
+    <div style="grid-column: 1 / -1;" class="profile-avatar-wrap">
+      ${avatarHtml}
+      <div>
+        <h3 style="font-size: 1.2rem; margin-bottom: 2px;">${trainer.name}</h3>
+        <p style="color: var(--muted); font-size: 0.9rem;">Trainer ID: ${trainer._id.slice(-6).toUpperCase()}</p>
+      </div>
+    </div>
     <div><span>Name</span><strong>${trainer.name}</strong></div>
     <div><span>Email</span><strong>${trainer.email}</strong></div>
     <div><span>Phone</span><strong>${trainer.phone}</strong></div>
@@ -94,26 +105,47 @@ function bindTrainerProfileEditor(trainerId) {
     }
 
     try {
+      let profileImageBase64 = undefined;
+      const fileInput = document.getElementById("editTrainerProfileImage");
+      if (fileInput && fileInput.files && fileInput.files[0]) {
+        profileImageBase64 = await readFileAsBase64(fileInput.files[0]);
+      }
+
+      const payload = {
+        name: document.getElementById("editTrainerName").value.trim(),
+        phone: document.getElementById("editTrainerPhone").value.trim(),
+        experience: Number(document.getElementById("editTrainerExperience").value),
+        specialization,
+        bio: document.getElementById("editTrainerBio").value.trim(),
+      };
+
+      if (profileImageBase64 !== undefined) {
+        payload.profileImage = profileImageBase64;
+      }
+
       const data = await fetchJson(`${API_BASE}/trainers/${trainerId}/profile`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: document.getElementById("editTrainerName").value.trim(),
-          phone: document.getElementById("editTrainerPhone").value.trim(),
-          experience: Number(document.getElementById("editTrainerExperience").value),
-          specialization,
-          bio: document.getElementById("editTrainerBio").value.trim(),
-        }),
+        body: JSON.stringify(payload),
       });
 
       localStorage.setItem("gymUser", JSON.stringify({ role: "trainer", user: data.trainer }));
       renderTrainerProfile(data.trainer);
       document.getElementById("trainerWelcome").textContent = `Welcome, ${data.trainer.name}`;
       modal.classList.add("hidden-form");
-      showToast("Trainer profile updated successfully.", "success");
+      showToast("Trainer profile updated with picture.", "success");
     } catch (error) {
       showToast(error.message || "Unable to update profile right now.", "error");
     }
+  });
+}
+
+function readFileAsBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = (error) => reject(error);
+    reader.readAsDataURL(file);
   });
 }
 
@@ -167,35 +199,95 @@ function populateMemberOptions(members) {
   });
 }
 
+let allActivitiesCache = [];
+
 function renderActivity(attendance, dietPlans, progress) {
-  const activity = [
-    ...attendance.slice(-2).map((item) => ({
-      title: `Attendance: ${item.member?.name || "Member"}`,
-      detail: `${item.status} on ${formatDate(item.date)}`,
-    })),
-    ...dietPlans.slice(-2).map((item) => ({
-      title: `Diet Plan: ${item.member?.name || "Member"}`,
-      detail: `${item.goal} goal`,
-    })),
-    ...progress.slice(-2).map((item) => ({
-      title: `Progress: ${item.member?.name || "Member"}`,
-      detail: `${item.weight} kg, BMI ${item.bmi}`,
-    })),
+  allActivitiesCache = [
+    ...attendance.map((item) => {
+      const dateStr = formatDate(item.date);
+      return {
+        type: "attendance",
+        title: `Attendance: ${item.member?.name || "Member"}`,
+        detail: `${item.status} on ${dateStr}`,
+        fullMessage: `📌 ATTENDANCE RECORD\nMember: ${item.member?.name || "Member"}\nStatus: ${item.status}\nDate: ${dateStr}\nEmail: ${item.member?.email || "N/A"}`,
+        timestamp: new Date(item.date || Date.now()).getTime(),
+      };
+    }),
+    ...dietPlans.map((item) => {
+      const dateStr = formatDate(item.createdAT || item.createdAt);
+      return {
+        type: "diet",
+        title: `Diet Plan: ${item.member?.name || "Member"}`,
+        detail: `${item.goal} goal — ${item.planDetails ? item.planDetails.substring(0, 35) + "..." : ""}`,
+        fullMessage: `🥗 DIET PLAN\nMember: ${item.member?.name || "Member"}\nGoal: ${item.goal}\nAssigned: ${dateStr}\nDetails: ${item.planDetails || "None"}`,
+        timestamp: new Date(item.createdAT || item.createdAt || Date.now()).getTime(),
+      };
+    }),
+    ...progress.map((item) => {
+      const dateStr = formatDate(item.date);
+      return {
+        type: "progress",
+        title: `Progress: ${item.member?.name || "Member"}`,
+        detail: `${item.weight} kg, BMI ${item.bmi} (${dateStr})`,
+        fullMessage: `🏋️ PROGRESS METRIC\nMember: ${item.member?.name || "Member"}\nWeight: ${item.weight} kg | Height: ${item.height} cm\nBMI: ${item.bmi}\nType: ${item.progressType || "N/A"}\nNotes: ${item.notes || "No notes"}`,
+        timestamp: new Date(item.date || Date.now()).getTime(),
+      };
+    }),
   ];
 
-  document.getElementById("trainerActivity").innerHTML = activity.length
-    ? activity
-        .reverse()
-        .map(
-          (item) => `
-            <article class="mini-card">
-              <h3>${item.title}</h3>
-              <p>${item.detail}</p>
-            </article>
-          `
-        )
-        .join("")
-    : `<p class="empty-state">No recent activity yet.</p>`;
+  allActivitiesCache.sort((a, b) => b.timestamp - a.timestamp);
+  setupActivityFilter();
+  applyActivityFilter();
+}
+
+function setupActivityFilter() {
+  const filterSelect = document.getElementById("activityFilterSelect");
+  if (!filterSelect || filterSelect.dataset.bound) return;
+  filterSelect.dataset.bound = "true";
+
+  filterSelect.addEventListener("change", applyActivityFilter);
+}
+
+function applyActivityFilter() {
+  const filterSelect = document.getElementById("activityFilterSelect");
+  const filterValue = filterSelect ? filterSelect.value : "all";
+
+  let filtered = allActivitiesCache;
+  if (filterValue !== "all") {
+    filtered = allActivitiesCache.filter((item) => item.type === filterValue);
+  }
+
+  const container = document.getElementById("trainerActivity");
+  if (!container) return;
+
+  if (!filtered.length) {
+    container.innerHTML = `<p class="empty-state">No matching activities found for selected filter.</p>`;
+    return;
+  }
+
+  const listToRender = filtered.slice(0, 8);
+
+  container.innerHTML = listToRender
+    .map(
+      (item) => `
+        <article class="mini-card activity-card">
+          <div class="activity-tooltip">${escapeHtml(item.fullMessage).replace(/\n/g, '<br>')}</div>
+          <h3>${item.title}</h3>
+          <p>${item.detail}</p>
+        </article>
+      `
+    )
+    .join("");
+}
+
+function escapeHtml(text) {
+  if (!text) return "";
+  return text
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
 }
 
 async function submitAttendance(event, trainerId) {

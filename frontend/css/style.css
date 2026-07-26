@@ -131,9 +131,17 @@ small {
 }
 
 .stack-form select option,
-.login-container select option {
+.login-container select option,
+select option {
   color: #111827;
   background: #ffffff;
+  padding: 8px 4px;
+}
+
+#activityFilterSelect option {
+  color: #111827;
+  background: #ffffff;
+  padding: 8px 4px;
 }
 
 .stack-form textarea {
@@ -232,6 +240,26 @@ button:hover,
   color: var(--text);
 }
 
+.message-link {
+  gap: 8px;
+  white-space: nowrap;
+}
+
+.count-badge {
+  min-width: 22px;
+  height: 22px;
+  padding: 0 6px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(90deg, var(--accent), var(--accent-soft));
+  color: #111;
+  font-size: 0.82rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
 .app-shell {
   width: min(1200px, 100%);
   margin: 0 auto;
@@ -304,7 +332,7 @@ button:hover,
 .action-list,
 .stacked-cards {
   display: grid;
-  gap: 14px;
+  gap: 20px;
 }
 
 .data-list {
@@ -327,6 +355,8 @@ button:hover,
 
 .inline-form {
   flex-wrap: wrap;
+  row-gap: 14px;
+  margin-top: 14px;
 }
 
 .inline-form select {
@@ -351,7 +381,7 @@ button:hover,
 
 .info-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 14px;
 }
 
@@ -370,8 +400,39 @@ button:hover,
 }
 
 .info-grid strong {
-  overflow-wrap: anywhere;
   word-break: break-word;
+  overflow-wrap: break-word;
+  font-size: 0.98rem;
+}
+
+.profile-avatar-wrap {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.profile-avatar {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--accent);
+  box-shadow: 0 4px 12px rgba(255, 122, 24, 0.3);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.profile-avatar-placeholder {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent), var(--accent-soft));
+  color: #111;
+  font-size: 1.8rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .table-wrap {
@@ -429,6 +490,98 @@ th {
 .toast.error {
   border-color: rgba(255, 93, 115, 0.55);
   background: rgba(81, 20, 29, 0.96);
+}
+
+.password-field-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.password-field-wrap input {
+  padding-right: 48px !important;
+  width: 100%;
+}
+
+.password-toggle-btn {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent !important;
+  border: none !important;
+  padding: 6px !important;
+  margin: 0 !important;
+  cursor: pointer;
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  transition: color 0.2s ease, opacity 0.2s ease;
+  z-index: 10;
+}
+
+.password-toggle-btn:hover {
+  color: var(--accent-soft);
+  transform: translateY(-50%) !important;
+  opacity: 1 !important;
+}
+
+.activity-card {
+  position: relative;
+  transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+  cursor: pointer;
+}
+
+.activity-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(255, 122, 24, 0.45) !important;
+  background: rgba(255, 255, 255, 0.07) !important;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.35);
+}
+
+.activity-tooltip {
+  opacity: 0;
+  pointer-events: none;
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  width: auto;
+  max-width: 500px;
+  max-height: 400px;
+  padding: 12px 14px;
+  background: rgba(12, 18, 26, 0.98);
+  border: 1px solid var(--accent);
+  border-radius: 12px;
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.6);
+  color: #eef2f6;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  z-index: 200;
+  word-break: break-word;
+  overflow-y: auto;
+  overflow-x: hidden;
+  transition: opacity 0.2s ease;
+}
+
+.activity-tooltip::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 6px;
+  border-style: solid;
+  border-color: var(--accent) transparent transparent transparent;
+}
+
+.activity-card:hover .activity-tooltip,
+.activity-tooltip:hover {
+  opacity: 1;
+  pointer-events: auto;
 }
 
 @media (max-width: 720px) {

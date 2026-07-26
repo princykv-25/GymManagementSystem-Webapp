@@ -110,6 +110,12 @@
       <article class="panel">
         <div class="panel-head">
           <h2>Recent Activity</h2>
+          <select id="activityFilterSelect" style="width: auto; padding: 7px 12px; font-size: 0.88rem; border-radius: 12px; background: rgba(255,255,255,0.08); color: var(--text);">
+            <option value="all">All Activities</option>
+            <option value="attendance">Attendance Only</option>
+            <option value="diet">Diet Plans Only</option>
+            <option value="progress">Progress Logs Only</option>
+          </select>
         </div>
         <div id="trainerActivity" class="stacked-cards"></div>
       </article>
@@ -137,6 +143,16 @@
         <input type="file" id="editTrainerProfileImage" accept="image/*" />
         <button type="submit">Save Profile</button>
       </form>
+    </div>
+  </div>
+
+  <div id="activityDetailModal" class="modal-shell hidden-form">
+    <div class="modal-card" style="width: min(650px, 95%);">
+      <div class="panel-head">
+        <h2 id="activityModalTitle">Activity Details</h2>
+        <button id="closeActivityModal" type="button" class="secondary-btn">Close</button>
+      </div>
+      <div id="activityModalBody" style="white-space: pre-line; line-height: 1.6; font-size: 0.95rem; color: #eef2f6; background: rgba(255,255,255,0.04); padding: 18px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.08); max-height: 60vh; overflow-y: auto;"></div>
     </div>
   </div>
 

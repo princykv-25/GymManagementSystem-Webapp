@@ -18,6 +18,7 @@ const dietPlanRoutes = require("./routes/DietPlanRoutes");
 const progressRoutes = require("./routes/progressRoutes");
 const adminRoutes = require("./routes/adminRoutes");
 const messageRoutes = require("./routes/messageRoutes");
+const taskRoutes = require("./routes/taskRoutes");
 
 app.use("/api/members", memberRoutes);
 app.use("/api/trainers", trainerRoutes);
@@ -26,6 +27,7 @@ app.use("/api/dietplans", dietPlanRoutes);
 app.use("/api/progress", progressRoutes);
 app.use("/api/admins", adminRoutes);
 app.use("/api/messages", messageRoutes);
+app.use("/api/tasks", taskRoutes);
 
 app.get("/", (req, res) => {
   res.send("Gym Management System Backend Running");

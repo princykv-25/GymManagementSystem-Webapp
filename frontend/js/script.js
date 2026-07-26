@@ -2,6 +2,7 @@ const API_BASE = "http://localhost:5000/api";
 let memberProgressChart = null;
 
 document.addEventListener("DOMContentLoaded", () => {
+  setupPasswordToggles();
   setupLogin();
   setupResetPassword();
   setupTrainerResetPassword();
@@ -142,6 +143,7 @@ async function setupMemberDashboard() {
 
   bindLogout();
   bindMemberProfileEditor(session.user._id);
+  loadMessageCount(session);
 
   try {
     const memberId = session.user._id;
@@ -171,10 +173,37 @@ async function setupMemberDashboard() {
   }
 }
 
+async function loadMessageCount(session) {
+  const badge = document.getElementById("messageCountBadge");
+  if (!badge || !session?.user?._id || !session?.role) {
+    return;
+  }
+
+  try {
+    const data = await fetchJson(
+      `${API_BASE}/messages/count?role=${encodeURIComponent(session.role)}&userId=${encodeURIComponent(session.user._id)}`
+    );
+    badge.textContent = data.count || 0;
+  } catch (error) {
+    badge.textContent = "0";
+  }
+}
+
 function renderProfile(member) {
   const profile = document.getElementById("memberProfile");
   const bmiStatus = getBmiStatus(member.bmi);
+  const avatarHtml = member.profileImage
+    ? `<img src="${member.profileImage}" alt="${member.name}" class="profile-avatar" />`
+    : `<div class="profile-avatar-placeholder">${member.name.charAt(0).toUpperCase()}</div>`;
+
   profile.innerHTML = `
+    <div style="grid-column: 1 / -1;" class="profile-avatar-wrap">
+      ${avatarHtml}
+      <div>
+        <h3 style="font-size: 1.2rem; margin-bottom: 2px;">${member.name}</h3>
+        <p style="color: var(--muted); font-size: 0.9rem;">Member ID: ${member._id.slice(-6).toUpperCase()}</p>
+      </div>
+    </div>
     <div><span>Name</span><strong>${member.name}</strong></div>
     <div><span>Email</span><strong>${member.email}</strong></div>
     <div><span>Phone</span><strong>${member.phone}</strong></div>
@@ -323,18 +352,30 @@ function bindMemberProfileEditor(memberId) {
     event.preventDefault();
 
     try {
+      let profileImageBase64 = undefined;
+      const fileInput = document.getElementById("editProfileImage");
+      if (fileInput && fileInput.files && fileInput.files[0]) {
+        profileImageBase64 = await readFileAsBase64(fileInput.files[0]);
+      }
+
+      const payload = {
+        name: document.getElementById("editName").value.trim(),
+        phone: document.getElementById("editPhone").value.trim(),
+        age: Number(document.getElementById("editAge").value),
+        gender: document.getElementById("editGender").value,
+        address: document.getElementById("editAddress").value.trim(),
+        height: document.getElementById("editHeight").value,
+        weight: document.getElementById("editWeight").value,
+      };
+
+      if (profileImageBase64 !== undefined) {
+        payload.profileImage = profileImageBase64;
+      }
+
       const response = await fetch(`${API_BASE}/members/${memberId}/profile`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: document.getElementById("editName").value.trim(),
-          phone: document.getElementById("editPhone").value.trim(),
-          age: Number(document.getElementById("editAge").value),
-          gender: document.getElementById("editGender").value,
-          address: document.getElementById("editAddress").value.trim(),
-          height: document.getElementById("editHeight").value,
-          weight: document.getElementById("editWeight").value,
-        }),
+        body: JSON.stringify(payload),
       });
       const data = await response.json();
 
@@ -347,11 +388,20 @@ function bindMemberProfileEditor(memberId) {
       renderProfile(data.member);
       document.getElementById("trainerName").textContent = data.member.trainer?.name || "Not Assigned";
       await refreshMemberProgress(memberId, data.member);
-      showToast(`Profile updated. Current BMI: ${data.member.bmi || "Not available"}`, "success");
+      showToast(`Profile updated with picture. Current BMI: ${data.member.bmi || "Not available"}`, "success");
       modal?.classList.add("hidden-form");
     } catch (error) {
       showToast(error.message || "Unable to update profile.", "error");
     }
+  });
+}
+
+function readFileAsBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = (error) => reject(error);
+    reader.readAsDataURL(file);
   });
 }
 
@@ -484,4 +534,44 @@ function showToast(message, type = "success") {
     toast.classList.remove("show");
     setTimeout(() => toast.remove(), 300);
   }, 2500);
+}
+
+function setupPasswordToggles() {
+  document.querySelectorAll('input[type="password"]').forEach((input) => {
+    if (input.dataset.hasToggle) return;
+    input.dataset.hasToggle = "true";
+
+    const wrapper = document.createElement("div");
+    wrapper.className = "password-field-wrap";
+
+    input.parentNode.insertBefore(wrapper, input);
+    wrapper.appendChild(input);
+
+    const toggleBtn = document.createElement("button");
+    toggleBtn.type = "button";
+    toggleBtn.className = "password-toggle-btn";
+    toggleBtn.setAttribute("aria-label", "Toggle password visibility");
+    toggleBtn.innerHTML = `
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="eye-icon">
+        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+        <circle cx="12" cy="12" r="3"></circle>
+      </svg>
+    `;
+
+    toggleBtn.addEventListener("click", () => {
+      const isPassword = input.type === "password";
+      input.type = isPassword ? "text" : "password";
+      toggleBtn.innerHTML = isPassword
+        ? `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="eye-off-icon">
+            <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+            <line x1="1" y1="1" x2="23" y2="23"></line>
+          </svg>`
+        : `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="eye-icon">
+            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+            <circle cx="12" cy="12" r="3"></circle>
+          </svg>`;
+    });
+
+    wrapper.appendChild(toggleBtn);
+  });
 }
